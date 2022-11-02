@@ -5,13 +5,13 @@ module RailsKmsCredentials
     module AzureKeyVault
 
       class Store < Base::Store
-        attr_reader :vault, :vault_url, :client
+        attr_reader :vault, :vault_url, :client, :secret_prefix, :loaded
 
         SECRETS_API_VERSION = '7.3'
 
         EMPTY_VALUE = '--EMPTY--'
 
-        def initialize(*) # rubocop:disable Metrics/AbcSize
+        def initialize(*) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
           super
           @vault = config['vault']
           raise 'Missing KmsCredentials AzureKeyVault vault' if vault.blank?
@@ -21,6 +21,13 @@ module RailsKmsCredentials
           raise 'Missing KmsCredentials AzureKeyVault client.type' if config['client']['type'].blank?
           @_client_klass = Client.get config['client']['type']
           @client = @_client_klass.new self
+          @secret_prefix =  case config['client']['secret_prefix']
+                            when true
+                              Rails.application.class.parent.to_s.underscore.dasherize
+                            when String
+                              config['client']['secret_prefix']
+                            end
+          @_secret_prefix = @secret_prefix ? Regexp.new("^#{@secret_prefix}----") : ''
           @loaded = false
         end
 
@@ -28,7 +35,7 @@ module RailsKmsCredentials
           return @credentials if instance_variable_defined?(:@credentials)
           load_secrets
           @credentials = @_secrets.values.each_with_object(ActiveSupport::OrderedOptions.new) do |secret, memo|
-            name = secret['name'].split('--')
+            name = secret['name'].remove(@_secret_prefix).split('--')
             name.each { |x| x.gsub!('-', '_') }
             parent = name[0..-2].inject(memo) do |h, key|
               if h.key?(key) && !h[key].is_a?(ActiveSupport::OrderedOptions)
@@ -47,7 +54,7 @@ module RailsKmsCredentials
             load_secrets_list
           end
 
-          def load_secrets_list(url = nil) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+          def load_secrets_list(url = nil) # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity, Metrics/MethodLength
             @_get_secrets_list_responses ||= []
             @_secrets ||= {}
             url ||= "#{vault_url}/secrets?api-version=#{SECRETS_API_VERSION}"
@@ -56,6 +63,7 @@ module RailsKmsCredentials
             raise "KmsCredentials AzureKeyVault unable to get list of secrets: #{url}" unless response.ok?
             response['value'].each do |secret|
               secret_name = secret['id'].split('/').last
+              next unless secret_name =~ @_secret_prefix
               secret['name'] = secret_name
               @_secrets[secret_name] = secret
               load_secret secret_name
