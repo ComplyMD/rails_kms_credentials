@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rails_kms_credentials (0.0.2)
+    rails_kms_credentials (0.1.0)
       activesupport (>= 5.0.0)
       httparty (~> 0.17.0)
       railties (>= 5.0.0)
