@@ -33,7 +33,8 @@ Key | Description
 `client.secret_prefix` | The prefix that all secrets for this application will have. See [Secret Prefix](#secret-prefix).
 
 #### Secret Prefix
-The prefix along with `----` will be added to the beginning of the secret name (ex. `prefix: abc123` -> `abc123----some-secret`)
+The prefix along with `----` will be added to the beginning of the secret name (ex. `prefix: abc123` -> `abc123----some-secret`). May be specified with a string, or using your application's name by passing `true` (will use `Rails.application.class.parent.to_s.underscore.dasherize`).
+
 
 #### Client Types
 
