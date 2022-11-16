@@ -21,6 +21,12 @@ module RailsKmsCredentials
             raise NotImplementedError
           end
 
+          private
+
+            def client_config
+              config['client']
+            end
+
         end
       end
     end

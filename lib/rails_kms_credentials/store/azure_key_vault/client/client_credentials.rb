@@ -37,10 +37,6 @@ module RailsKmsCredentials
 
           private
 
-            def client_config
-              config['client']
-            end
-
             def access_token
               return @access_token if instance_variable_defined?(:@access_token)
               @_access_token_response = HTTParty.post(

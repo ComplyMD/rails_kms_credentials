@@ -27,8 +27,10 @@ module RailsKmsCredentials
 
             def access_token
               return @access_token if instance_variable_defined?(:@access_token)
+              url = 'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net'
+              url += "&client_id=#{client_config['client_id']}" if client_config['client_id']
               @_access_token_response = HTTParty.get(
-                'http://169.254.169.254/metadata/identity/oauth2/token?api-version=2018-02-01&resource=https%3A%2F%2Fvault.azure.net',
+                url,
                 {
                   headers: { Metadata: 'true' },
                 }
