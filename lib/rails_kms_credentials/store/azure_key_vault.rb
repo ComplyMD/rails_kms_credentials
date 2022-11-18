@@ -23,7 +23,7 @@ module RailsKmsCredentials
           @client = @_client_klass.new self
           @secret_prefix =  case config['client']['secret_prefix']
                             when true
-                              Rails.application.class.parent.to_s.underscore.dasherize
+                              Rails.application.class.name.split('::').first.underscore.dasherize
                             when String
                               config['client']['secret_prefix']
                             end
