@@ -25,5 +25,6 @@ module RailsKmsCredentials
 end
 
 require 'rails_kms_credentials/store/azure_key_vault/client/base'
+require 'rails_kms_credentials/store/azure_key_vault/client/aks_workload_identity'
 require 'rails_kms_credentials/store/azure_key_vault/client/client_credentials'
 require 'rails_kms_credentials/store/azure_key_vault/client/managed_identity'
