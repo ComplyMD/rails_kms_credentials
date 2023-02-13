@@ -46,18 +46,19 @@ module RailsKmsCredentials
 
           private
 
-            def client_secret
-              @client_secret ||= File.read(@federated_token_file)
+            def client_assertion
+              @client_assertion ||= File.read(@federated_token_file)
             end
 
             def access_token
               return @access_token if instance_variable_defined?(:@access_token)
               @_access_token_response = HTTParty.post(
-                "#{authority_host}/#{tenant_id}/oauth2/v2.0/token",
+                "#{authority_host}#{tenant_id}/oauth2/v2.0/token",
                 {
                   body: {
+                    client_assertion: client_assertion,
+                    client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
                     client_id: client_id,
-                    client_secret: client_secret,
                     scope: 'https://vault.azure.net/.default',
                     grant_type: 'client_credentials',
                   }
