@@ -3,6 +3,7 @@
 # Container Module
 module RailsKmsCredentials; end
 
+require 'httparty'
 require 'active_support/concern'
 
 require 'rails_kms_credentials/application'

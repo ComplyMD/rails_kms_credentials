@@ -27,8 +27,8 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 2.7.0'
 
-  s.add_dependency('activesupport', '>= 5.0.0')
-  s.add_dependency('railties', '>= 5.0.0')
+  s.add_dependency('activesupport', '>= 5.0.0', '< 8.0.0')
+  s.add_dependency('railties', '>= 5.0.0', '< 8.0.0')
 
   s.add_dependency('httparty', '~> 0.21.0')
 end
