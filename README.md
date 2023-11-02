@@ -58,6 +58,8 @@ Key | Description
 ##### Client Credentials
 This is the client to use when connecting from outside of Azure. [See here](https://learn.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-client-creds-grant-flow).
 
+You'll need to register an "App Registration" in Azure and grant it permission to access the Key vault secrets. [See the wiki page for morehelp](https://nuancewiki.atlassian.net/wiki/spaces/EN/pages/797409849/Azure+KMS+Credentials)
+
 **Config**
 Key | Description
 ---|---
