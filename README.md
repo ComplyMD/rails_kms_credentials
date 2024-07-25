@@ -44,6 +44,7 @@ Client | `client.type`
 ---|---
 [Managed Identity](#managed-identity) | `managed_identity`
 [Client Credentials](#client-credentials) | `client_credentials`
+[Environment Access Token](#environment-access-token) | `env_access_token`
 
 
 ##### Managed Identity
@@ -66,3 +67,18 @@ Key | Description
 `client.tenant_id` | The directory tenant the application plans to operate against, in GUID or domain-name format.
 `client.client_id` | The application ID that's assigned to your app. You can find this information in the portal where you registered your app.
 `client.client_secret` | The client secret that you generated for your app in the app registration portal.
+
+##### Environment Access Token
+This is the client to use when you have an access token that can be loaded by setting an Environment variable.
+
+The `access_token` may be fetched via Azure CLI. For example, you could
+authenticate via `az login`, then export the `access_token` into your session:
+
+```
+az account get-access-token --resource "https://vault.azure.net" --query "accessToken" -o tsv
+```
+
+**Config:**
+Key | Description
+---|---
+`client.type` | `env_access_token`
