@@ -11,11 +11,8 @@ module RailsKmsCredentials
 
         def initialize(*) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
           super
-          @file_path = Rails.root.join('config', 'kms_credential_vault.yml')
+          @file_path = Rails.root.join('config', 'kms_credentials_local_file_key_vault.yml')
           raise 'Missing KmsCredentials local file vault' unless File.exist?(@file_path)
-          logger = Rails.logger || Logger.new(STDOUT)
-          logger.info("Secret Prefix: #{config['client']['secret_prefix']}")
-          logger.info(Rails.application.class.name.split('::').first.underscore.dasherize)
           @secret_prefix = case config['client']['secret_prefix']
                            when true
                              Rails.application.class.name.split('::').first.underscore.dasherize
@@ -23,8 +20,6 @@ module RailsKmsCredentials
                             config['client']['secret_prefix']
                            end
           @_secret_prefix = @secret_prefix.present? ? Regexp.new("^#{@secret_prefix}----") : ''
-          
-          logger.info("Secret Prefix: #{@_secret_prefix}")
           @loaded = false
         end
 
