@@ -22,3 +22,4 @@ end
 
 require 'rails_kms_credentials/store/base'
 require 'rails_kms_credentials/store/azure_key_vault'
+require 'rails_kms_credentials/store/local_file_key_vault'

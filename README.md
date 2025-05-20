@@ -14,6 +14,7 @@ Key | Description
 Key Management System | Config Value
 ---|---
 [Azure Key Vault](#azure-key-vault) | `azure_key_vault`
+[Local File Key Vault](#local-file-key-vault) | `local_file_key_vault`
 
 ### Azure Key Vault
 Credentials will be loaded from a Key Vault's Secrets.
@@ -82,3 +83,12 @@ az account get-access-token --resource "https://vault.azure.net" --query "access
 Key | Description
 ---|---
 `client.type` | `env_access_token`
+
+### Local File Key Vault
+Credentials are loaded from local file named `kms_credentials_local_file_key_vault.yml`
+Following is a sample representation of the file contents:
+Secret | Value
+---|---
+`comply-md----account-id-secret` | `secret_value_1`
+`comply-md----access-key-secret` | `secret_value_2`
+`comply-md----api-key-secret` | `secret_value_3`
